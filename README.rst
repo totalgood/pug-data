@@ -3,17 +3,15 @@ pug-data
 ========
 
 
-Add a short description here!
+An eager data retriever to aid you with machine learning.
 
 
 Description
 ===========
 
-A LONGER DESCRIPTION OF YOUR PROJECT GOES HERE...
+Compose Pandas dataframes from data retrieved from the following services
 
-
-Note
-====
-
-This project has been set up using PyScaffold 2.3. For details and usage
-information on PyScaffold see http://pyscaffold.readthedocs.org/.
++ historical weather condition time series at stations across the US from [Weather Underground](//wunderground.com)
++ natural language tweets from the [Twitter API](//twitter.com)
+- oregon campaign finance transactions from [Hack Oregon](//hackoregon.org)
+- financial market data from [yahoo finance](finance.yahoo.com)
