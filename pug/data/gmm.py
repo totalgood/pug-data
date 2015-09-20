@@ -10,25 +10,36 @@ References:
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.mlab as mlab
+from scipy.stats import multivariate_stats
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn import mixture
 
 
-def gaussian(x=None, y=None, sigma=(1., 1.), mu=(-1, -1), sigmaxy=-.75):
-    try:
-        x = float(x)
-    except:
-        x = np.arange(-5 * sigma[0], 5 * sigma[0], .2 * sigma[0])
-    try:
-        y = float(y)
-    except:
-        y = np.arange(-5 * sigma[1], 5 * sigma[1], .2 * sigma[1])
-    X, Y = np.meshgrid(x, y)
-    if X.shape == (1, 1):
-        X = X[0, 0]
-    if Y.shape == (1, 1):
-        Y = Y[0, 0]
+def normal_pdf(*args, mean=None, cov=None, **kwargs):
+    """Normal Probability Density Function. Thin wrapper for scipy.stats.multivariate_normal
+
+    >>> normal_pdf([-1, 0, 1], sigma=1, mu=0, cov=1)
+    array([ 0.24197072,  0.39894228,  0.24197072])
+    >>> normal_pdf([[-1,0,1], [-1,0,1]], sigma=[1,2], mu=0, cov=np.identity(2))
+    ...                             # doctest: +NORMALIZE_WHITESPACE, +ELLIPSIS
+    array([ 0.05854983,  0.09653235,  0.05854983,  0.09653235,  0.15915494,
+            0.09653235,  0.05854983,  0.09653235,  0.05854983])
+    """
+    # sigma = cov, but cov overrides sigma, both accept scalars or np.arrays
+    cov = kwargs.pop('sigma', None) if cov is None else cov
+    cov = np.array(1. if cov is None else cov)
+    mean = kwargs.pop('mu', None) if mean is None else mean
+    mean = np.array(0. if mean is None else mean)
+    D = len(mean)
+    if any(D != cov_D for cov_D in cov.shape):
+        mean = mean * np.ones(cov.shape[0])
+        cov = cov * np.diag(np.array([[1.,2],[3,4]]).shape)
+    X = np.array(args[0] if len(args) == 1 else args if len(args) == 0 else 0.)
+    if X.shape[1] != len(mean):
+        X = X.T
+
+    X = np.array(X)
+    return stats.mutivariate_normal(mean=mu, cov=cov).pdf(X)
     return mlab.bivariate_normal(X, Y, sigma[0], sigma[1], mu[0], mu[1], sigmaxy)
 
 
