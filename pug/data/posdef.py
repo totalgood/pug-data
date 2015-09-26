@@ -1,8 +1,12 @@
 r"""Faulty positive semidefinite matrix generator
 
+References:
+  https://en.wikipedia.org/wiki/Positive-definite_matrix
+  https://en.wikipedia.org/wiki/Random_matrix
+
 Using a normally distributed random matrix it's pretty
 rare that you'll get a semidefinite matrix from the product,
-even for low dimensions. For 3 dimensions you have about a 0.001%% yield
+even for low dimensions. For 3 dimensions you have a ~7% yield
 
 >>> np.random.seed(2)
 >>> pos_semi_matrices = generate_positive_semidefinite_matrices(num_samples=1000)
