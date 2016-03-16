@@ -21,6 +21,19 @@ def airport(location, default=None):
 airport.locations = json.load(open(os.path.join(CACHE_PATH, 'airport.locations.json'), 'rUb'))
 
 
+def date_range(days=None, start=None, end=None, years=1):
+    if years and not days:
+        days = years * 365
+    if days and isinstance(days, int):
+        if start:
+            return pd.date_range(start=start, periods=days)
+        end = end or datetime.datetime.today().date()
+        return pd.date_range(start=start, end=end, periods=days)
+    if start:
+        return pd.date_range(start=start, periods=days)
+    return pd.date_range(end=datetime.datetime.today().date(), periods=days)
+
+
 def hourly(location='Fresno, CA', days=1, start=None, end=None, years=1, use_cache=True, verbosity=1):
     """ Get detailed (hourly) weather data for the requested days and location
 
@@ -41,10 +54,7 @@ def hourly(location='Fresno, CA', days=1, start=None, end=None, years=1, use_cac
     """
     airport_code = airport(location, default=location)
 
-    if isinstance(days, int):
-        start = start or None
-        end = end or datetime.datetime.today().date()
-        days = pd.date_range(start=start, end=end, periods=days)
+    days = date_range(days=days, start=start, end=end, years=years)
 
     # refresh the cache each calendar month or each change in the number of days in the dataset
     cache_path = 'hourly-{}-{}-{:02d}-{:04d}.csv'.format(airport_code, days[-1].year, days[-1].month, len(days))
