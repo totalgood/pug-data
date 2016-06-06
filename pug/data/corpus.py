@@ -28,7 +28,7 @@ def generate_lines(path=PATH_SHAKESPEARE,
     ...     pass
     >>> i
     124786
-    >>> iter(generate_lines()).next()
+    >>> next(iter(generate_lines()))
     '\xef\xbb\xbfThe Project Gutenberg EBook of The Complete Works of William Shakespeare, by'
     >>> len(list(generate_lines(start=10, stop=20)))
     10
@@ -65,6 +65,7 @@ def segment_shakespeare_works(path=PATH_SHAKESPEARE, verbose=False):
     meta = {}
     j = 0
     for i, line in enumerate(generate_lines(path=path)):
+        line = line.decode('utf-8')
         if 'title' not in meta:
             match = RE_GUTEN_LINE.match(line)
             if match:
