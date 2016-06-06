@@ -12,8 +12,8 @@ class T(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_truth(self):
-        self.assertTrue(True)
+    def test_doctests(self):
+        self.assertEqual(doctest.testmod(pug.data.corpus, verbose=True).failed, 0)
 
 
 def load_tests(loader, tests, ignore):

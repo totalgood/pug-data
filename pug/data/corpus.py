@@ -30,6 +30,8 @@ def generate_lines(path=PATH_SHAKESPEARE,
     124786
     >>> iter(generate_lines()).next()
     '\xef\xbb\xbfThe Project Gutenberg EBook of The Complete Works of William Shakespeare, by'
+    >>> len(list(generate_lines(start=10, stop=20)))
+    10
     """
     with (gzip.open(path, 'rU') if path.endswith('.gz') else open(path, 'rU')) as f:
         for i, line in enumerate(f):
@@ -41,28 +43,25 @@ def generate_lines(path=PATH_SHAKESPEARE,
 
 
 def segment_shakespeare_works(path=PATH_SHAKESPEARE, verbose=False):
-    """Find start and end of each volume within _Complete Works of William Shakespeare_
+    r"""Find start and end of each volume within _Complete Works of William Shakespeare_
 
-    >>> segment_shakespeare_works()
-    {'body_start': 21,
-     'title': 'COMPLETE WORKS--WILLIAM SHAKESPEARE',
-     'volumes': [{'by': 'William Shakespeare',
-       'by_lineno': 177,
-       'start': 173,
-       'stop': 2798,
-       'title': 'THE SONNETS',
-       'title_lineno': 175,
-       'year': 1609},
-    ...
-    {'by': 'William Shakespeare',
-     'by_lineno': 123986,
-     'start': 123982,
-     'stop': 124366,
-     'title': "A LOVER'S COMPLAINT",
-     'title_lineno': 123984,
-     'year': 1609}]}
+    >>> meta = segment_shakespeare_works()
+    >>> meta['body_start']
+    21
+    >>> meta['title']
+    'COMPLETE WORKS--WILLIAM SHAKESPEARE'
+    >>> len(meta['volumes'])
+    37
+    >>> meta['volumes'][0]['start']
+    173
+    >>> meta['volumes'][0]['stop']
+    2798
+    >>> meta['volumes'][0]['title']
+    'THE SONNETS'
+    >>> meta['volumes'][-1]['title']
+    "A LOVER'S COMPLAINT"
     """
-    works = [{}]
+    works = []
     meta = {}
     j = 0
     for i, line in enumerate(generate_lines(path=path)):
