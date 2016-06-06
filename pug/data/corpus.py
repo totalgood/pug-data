@@ -33,7 +33,7 @@ def generate_lines(path=PATH_SHAKESPEARE,
     >>> len(list(generate_lines(start=10, stop=20)))
     10
     """
-    with (gzip.open(path, 'rU') if path.endswith('.gz') else open(path, 'rU')) as f:
+    with (gzip.open(path, 'r') if path.endswith('.gz') else open(path, 'r')) as f:
         for i, line in enumerate(f):
             if i < start:
                 continue
