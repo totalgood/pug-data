@@ -33,3 +33,7 @@ ipython[all]>=4.2.0
 #$ sudo pip install --no-cache-dir --no-binary :all: --upgrade -r requirements.txt
 #$ nano
 matplotlib>=1.5.1
+
+# test requirements
+markupsafe
+entrypoints
