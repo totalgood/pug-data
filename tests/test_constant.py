@@ -3,7 +3,7 @@
 import unittest
 import doctest
 
-import pug.constant
+import pug.data.constant
 
 
 class T(unittest.TestCase):
