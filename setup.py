@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-    Setup file for data.
+    Setup file for pug.
 
-    This file was generated with PyScaffold 2.3, a tool that easily
+    This file was generated with PyScaffold 2.5.6, a tool that easily
     puts up a scaffold for your new Python project. Learn more under:
     http://pyscaffold.readthedocs.org/
 """
@@ -13,10 +13,9 @@ from setuptools import setup
 
 
 def setup_package():
-    needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
-    pytest_runner = ['pytest-runner'] if needs_pytest else []
-    setup(setup_requires=['six', 'markupsafe', 'entrypoints', 'pyscaffold>=2.3rc1,<2.4a0'] + pytest_runner,
-          tests_require=['markupsafe', 'entrypoints', 'pytest_cov', 'pytest'],
+    needs_sphinx = {'build_sphinx', 'upload_docs'}.intersection(sys.argv)
+    sphinx = ['sphinx'] if needs_sphinx else []
+    setup(setup_requires=['six', 'pyscaffold>=2.5a0,<2.6a0'] + sphinx,
           use_pyscaffold=True)
 
 

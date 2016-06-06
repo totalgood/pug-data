@@ -9,28 +9,32 @@
 # serve to show the default.
 
 import sys
-import os
-import inspect
-from sphinx import apidoc
-
-
-__location__ = os.path.join(os.getcwd(), os.path.dirname(
-    inspect.getfile(inspect.currentframe())))
-
-package = "data"
-namespace = ['pug']
-root_pkg = namespace[0] if namespace else package
-namespace_pkg = ".".join([namespace[-1], package]) if namespace else package
-output_dir = os.path.join(__location__, "../docs/_rst")
-module_dir = os.path.join(__location__, "..", root_pkg)
-cmd_line_template = "sphinx-apidoc -f -o {outputdir} {moduledir}"
-cmd_line = cmd_line_template.format(outputdir=output_dir, moduledir=module_dir)
-apidoc.main(cmd_line.split(" "))
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 # sys.path.insert(0, os.path.abspath('.'))
+
+# -- Hack for ReadTheDocs ------------------------------------------------------
+# This hack is necessary since RTD does not issue `sphinx-apidoc` before running
+# `sphinx-build -b html . _build/html`. See Issue:
+# https://github.com/rtfd/readthedocs.org/issues/1139
+# DON'T FORGET: Check the box "Install your project inside a virtualenv using
+# setup.py install" in the RTD Advanced Settings.
+import os
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+if on_rtd:
+    import inspect
+    from sphinx import apidoc
+
+    __location__ = os.path.join(os.getcwd(), os.path.dirname(
+        inspect.getfile(inspect.currentframe())))
+
+    output_dir = os.path.join(__location__, "../docs/api")
+    module_dir = os.path.join(__location__, "../pug_data")
+    cmd_line_template = "sphinx-apidoc -f -o {outputdir} {moduledir}"
+    cmd_line = cmd_line_template.format(outputdir=output_dir, moduledir=module_dir)
+    apidoc.main(cmd_line.split(" "))
 
 # -- General configuration -----------------------------------------------------
 
@@ -41,7 +45,8 @@ apidoc.main(cmd_line.split(" "))
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo',
               'sphinx.ext.autosummary', 'sphinx.ext.viewcode', 'sphinx.ext.coverage',
-              'sphinx.ext.doctest', 'sphinx.ext.ifconfig', 'sphinx.ext.pngmath', 'numpydoc']
+              'sphinx.ext.doctest', 'sphinx.ext.ifconfig', 'sphinx.ext.pngmath',
+              'sphinx.ext.napoleon']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -57,7 +62,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pug-data'
-copyright = u'2015, Hobson Lane'
+copyright = u'2016, Hobson Lane'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -123,7 +128,7 @@ html_theme = 'alabaster'
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
 try:
-    from namespace_pkg import __version__ as version
+    from pug_data import __version__ as version
 except ImportError:
     pass
 else:
@@ -188,7 +193,7 @@ html_static_path = ['_static']
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'data-doc'
+htmlhelp_basename = 'pug-doc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
