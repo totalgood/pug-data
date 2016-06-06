@@ -14,5 +14,6 @@ before_install:
 install:
   - conda create --yes -n pug-data-test python=$TRAVIS_PYTHON_VERSION pip atlas pyzmq numpy scipy matplotlib scikit-learn
   - source activate pug-data-test
+  - pip install -r requirements-test.txt
   - python setup.py install
 script: python setup.py test
