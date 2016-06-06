@@ -35,6 +35,7 @@ def generate_lines(path=PATH_SHAKESPEARE,
     """
     with (gzip.open(path, 'r') if path.endswith('.gz') else open(path, 'r')) as f:
         for i, line in enumerate(f):
+            line = line.decode('utf-8')
             if i < start:
                 continue
             if i >= stop:
