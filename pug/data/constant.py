@@ -27,3 +27,4 @@ for (prefix, value) in [('XL', 40), ('L', 50)]:
     DICT_ROMAN2INT.update(dict([(prefix + s, value + num) for s, num in R2I_10.items()]))
 for num_X in range(1, 4):
     DICT_ROMAN2INT.update(dict([('L' + 'X' * num_X, 50 + 10 * num_X + num) for s, num in R2I_10.items()]))
+del R2I_10
